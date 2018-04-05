@@ -31,6 +31,7 @@ script:
 - cd $TRAVIS_BUILD_DIR/sdk/lede-sdk-*
 - ./scripts/feeds update packages
 - ./scripts/feeds install libpthread
+- make defconfig
 - make V=s
 - find $TRAVIS_BUILD_DIR/sdk/lede-sdk-*/bin/
 - find . -name *.ipk -exec cp {} $TRAVIS_BUILD_DIR \;
