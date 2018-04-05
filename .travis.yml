@@ -29,10 +29,16 @@ install:
 - ln -s $TRAVIS_BUILD_DIR/src package/$PACKAGE/
 script:
 - cd $TRAVIS_BUILD_DIR/sdk/lede-sdk-*
-- ./scripts/feeds update packages
-- ./scripts/feeds install libpthread
+- ./scripts/feeds update
 - make defconfig
-- make
+- sed -i 's/CONFIG_SIGNED_PACKAGES=y/# CONFIG_SIGNED_PACKAGES is not set/g' .config
+- make tools/install
+- make toolchain/install
+- make target/compile
+- make package/$PACKAGE/prepare
+- make package/$PACKAGE/compile V=ss
+- make package/$PACKAGE/install
+- make package/index
 - find $TRAVIS_BUILD_DIR/sdk/lede-sdk-*/bin/
 - find . -name *.ipk -exec cp {} $TRAVIS_BUILD_DIR \;
 - cd $TRAVIS_BUILD_DIR/
