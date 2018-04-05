@@ -22,18 +22,18 @@ install:
 - mkdir -p $TRAVIS_BUILD_DIR/sdk ; cd $TRAVIS_BUILD_DIR/sdk
 - export FILE=$TRAVIS_BUILD_DIR/cache/$(basename $SDK_URL)
 - file $FILE
-- tar xjf $FILE
-- cd $TRAVIS_BUILD_DIR/sdk/OpenWrt-SDK-*
+- tar xvJf $FILE
+- cd $TRAVIS_BUILD_DIR/sdk/lede-sdk-*
 - mkdir package/$PACKAGE
 - ln -s $TRAVIS_BUILD_DIR/Makefile package/$PACKAGE/
 - ln -s $TRAVIS_BUILD_DIR/src package/$PACKAGE/
 script:
 - export PATH=$TRAVIS_BUILD_DIR/local/usr/bin:$PATH
-- cd $TRAVIS_BUILD_DIR/sdk/OpenWrt-SDK-*
+- cd $TRAVIS_BUILD_DIR/sdk/lede-sdk-*
 - ./scripts/feeds update packages
 - ./scripts/feeds install libpthread
 - make V=s
-- find $TRAVIS_BUILD_DIR/sdk/OpenWrt-SDK-*/bin/
+- find $TRAVIS_BUILD_DIR/sdk/lede-sdk-*/bin/
 - find . -name *.ipk -exec cp {} $TRAVIS_BUILD_DIR \;
 - cd $TRAVIS_BUILD_DIR/
 # - chmod a+x $TRAVIS_BUILD_DIR/deploy.sh
