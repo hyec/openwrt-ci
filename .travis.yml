@@ -24,6 +24,7 @@ install:
 - mkdir package/$PACKAGE
 - ln -s $TRAVIS_BUILD_DIR/Makefile package/$PACKAGE/
 - ln -s $TRAVIS_BUILD_DIR/src package/$PACKAGE/
+- mkdir -p $TRAVIS_BUILD_DIR/deploy
 script:
 - cd $TRAVIS_BUILD_DIR/sdk/lede-sdk-*
 - ./scripts/feeds update
@@ -36,9 +37,17 @@ script:
 - make package/$PACKAGE/compile V=ss
 - make package/$PACKAGE/install
 - make package/index
-- find $TRAVIS_BUILD_DIR/sdk/lede-sdk-*/bin/
-- find . -name *.ipk -exec cp {} $TRAVIS_BUILD_DIR \;
-- cd $TRAVIS_BUILD_DIR/
+- cd bin/*/base
+- find .
+- cp *.ipk $TRAVIS_BUILD_DIR/deploy
+deploy:
+  local-dir: $TRAVIS_BUILD_DIR/deploy
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
+  keep-history: true
+  on:
+    branch: master
 # - chmod a+x $TRAVIS_BUILD_DIR/deploy.sh
 #after_success: $TRAVIS_BUILD_DIR/deploy.sh
 #before_deploy:
