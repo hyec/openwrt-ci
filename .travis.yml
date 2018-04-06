@@ -11,7 +11,7 @@ env:
     - SDK_URL=https://downloads.openwrt.org/releases/17.01.4/targets/ramips/mt7620/lede-sdk-17.01.4-ramips-mt7620_gcc-5.4.0_musl-1.1.16.Linux-x86_64.tar.xz
     - SDK_URL=https://downloads.openwrt.org/releases/17.01.4/targets/ramips/mt7621/lede-sdk-17.01.4-ramips-mt7621_gcc-5.4.0_musl-1.1.16.Linux-x86_64.tar.xz
 install:
-- mkdir -p $TRAVIS_BUILD_DIR/deploy
+- mkdir -p $TRAVIS_BUILD_DIR/gh-pages
 - mkdir -p $TRAVIS_BUILD_DIR/cache ; cd $TRAVIS_BUILD_DIR/cache
 - wget -c $SDK_URL
 - mkdir -p $TRAVIS_BUILD_DIR/sdk ; cd $TRAVIS_BUILD_DIR/sdk
@@ -30,15 +30,15 @@ script:
 - make package/$PACKAGE/prepare
 - make package/$PACKAGE/compile V=ss
 - make package/$PACKAGE/install
-- make package/index
 - cd ./bin/packages/*/base
 - find .
-- cp *.ipk $TRAVIS_BUILD_DIR/deploy
+- cp *.ipk $TRAVIS_BUILD_DIR/gh-pages/
+- find $TRAVIS_BUILD_DIR/gh-pages/
 deploy:
-  local-dir: $TRAVIS_BUILD_DIR/deploy
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
   keep-history: true
+  local-dir: gh-pages
   on:
     branch: master
