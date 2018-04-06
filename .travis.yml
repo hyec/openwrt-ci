@@ -30,14 +30,11 @@ script:
 - ./scripts/feeds update
 - make defconfig
 - sed -i 's/CONFIG_SIGNED_PACKAGES=y/# CONFIG_SIGNED_PACKAGES is not set/g' .config
-- make tools/install
-- make toolchain/install
-- make target/compile
 - make package/$PACKAGE/prepare
 - make package/$PACKAGE/compile V=ss
 - make package/$PACKAGE/install
 - make package/index
-- cd bin/*/base
+- cd ./bin/packages/*/base
 - find .
 - cp *.ipk $TRAVIS_BUILD_DIR/deploy
 deploy:
