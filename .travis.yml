@@ -10,10 +10,8 @@ env:
   matrix:
     - SDK_URL=https://downloads.openwrt.org/releases/17.01.4/targets/ramips/mt7620/lede-sdk-17.01.4-ramips-mt7620_gcc-5.4.0_musl-1.1.16.Linux-x86_64.tar.xz
     - SDK_URL=https://downloads.openwrt.org/releases/17.01.4/targets/ramips/mt7621/lede-sdk-17.01.4-ramips-mt7621_gcc-5.4.0_musl-1.1.16.Linux-x86_64.tar.xz
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y ccache
 install:
+- mkdir -p $TRAVIS_BUILD_DIR/deploy
 - mkdir -p $TRAVIS_BUILD_DIR/cache ; cd $TRAVIS_BUILD_DIR/cache
 - wget -c $SDK_URL
 - mkdir -p $TRAVIS_BUILD_DIR/sdk ; cd $TRAVIS_BUILD_DIR/sdk
@@ -24,7 +22,6 @@ install:
 - mkdir package/$PACKAGE
 - ln -s $TRAVIS_BUILD_DIR/Makefile package/$PACKAGE/
 - ln -s $TRAVIS_BUILD_DIR/src package/$PACKAGE/
-- mkdir -p $TRAVIS_BUILD_DIR/deploy
 script:
 - cd $TRAVIS_BUILD_DIR/sdk/lede-sdk-*
 - ./scripts/feeds update
@@ -45,17 +42,3 @@ deploy:
   keep-history: true
   on:
     branch: master
-# - chmod a+x $TRAVIS_BUILD_DIR/deploy.sh
-#after_success: $TRAVIS_BUILD_DIR/deploy.sh
-#before_deploy:
-#  git fetch --tags
-#deploy:
-#  provider: releases
-#  api_key:
-#    secure: L5yTlbnfbQ1FWuvI/33nv2vSZNj3fAHPdQ2ORNB5lkrzrzdEDX66kLyygLVpIUm0ZeFhlKAujrXFh5w9Gu9v4E3fuhVBZZ13ZDuopyTWmJDTu/xGbb/10WlsixzXZqAgYwvv6XxPQ6CvEUV01lppS1+787bAbJhpJKUYebiD8H8=
-#  skip_cleanup: true
-#  file_glob: true
-#  file: $TRAVIS_BUILD_DIR/*.ipk
-#  on:
-#    tags: true
-#    all_branches: true
